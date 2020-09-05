@@ -15,3 +15,7 @@ type Request struct {
 	Method   string
 	Protocol string
 }
+
+type AnalysisResult struct {
+	Name     string
+}
