@@ -2,7 +2,7 @@ package goaccess_analyzers
 
 import (
 
-	"github.com/codomatech/goaccess.go/common"
+	"github.com/codomatech/go.access/common"
 )
 
 func Analyze(records []common.AccessRecord) common.AnalysisResult {

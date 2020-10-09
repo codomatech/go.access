@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/codomatech/goaccess.go/common"
+	"github.com/codomatech/go.access/common"
 )
 
 func Parse(line string) common.AccessRecord {
