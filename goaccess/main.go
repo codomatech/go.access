@@ -14,6 +14,6 @@ func main() {
 
 // code generation
 
-//go:generate ./scripts/package-plugins.sh parsers github.com/codomatech/goaccess.go/parsers func(string)common.AccessRecord Parse parsers/plugins.go
-//go:generate ./scripts/package-plugins.sh analyzers github.com/codomatech/goaccess.go/analyzers func([]common.AccessRecord)common.AnalysisResult Analyze analyzers/plugins.go
-//go:generate ./scripts/package-plugins.sh output github.com/codomatech/goaccess.go/output func([]common.AnalysisResult,string) Output output/plugins.go
+//go:generate spluggy -func Parse -pkg github.com/codomatech/goaccess.go/parsers ./parsers
+//go:generate spluggy -func Analyze -pkg github.com/codomatech/goaccess.go/analyzers ./analyzers
+//go:generate spluggy -func Output -pkg github.com/codomatech/goaccess.go/output ./output
