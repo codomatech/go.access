@@ -19,7 +19,7 @@ func Parse(line string) common.AccessRecord {
 	record.Ip = result[1]
 
 	t, _ := time.Parse("2/Jan/2006:15:04:05 -0700", result[2])
-	record.Timestamp = t.Unix()
+	record.Day = t.Format("2006-01-02")
 
 	req := strings.Split(result[3], " ")
 	request.Method = req[0]
