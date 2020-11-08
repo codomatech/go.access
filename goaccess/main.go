@@ -4,11 +4,12 @@ import "bufio"
 import "flag"
 import "log"
 import "os"
+import "sort"
 
 import "github.com/codomatech/go.access/common"
 import parsers "github.com/codomatech/go.access/parsers"
+import analyzers "github.com/codomatech/go.access/analyzers"
 
-//import analyzers "github.com/codomatech/go.access/analyzers"
 //import output "github.com/codomatech/go.access/output"
 
 var arginformat = flag.String("format", "clf", "input log format")
@@ -56,11 +57,37 @@ func main() {
 	records := make([]common.AccessRecord, 0, maxlines)
 
 	scanner := bufio.NewScanner(file)
+	maxdayseen := ""
+	sorted := true
 	for scanner.Scan() {
-		records = append(records, parse(scanner.Text()))
+		record := parse(scanner.Text())
+		if record.Day < maxdayseen {
+			sorted = false
+		}
+		maxdayseen = record.Day
+		records = append(records, record)
+	}
+
+	if !sorted {
+		sort.Slice(records, func(i, j int) bool {
+			return records[i].Day < records[j].Day
+		})
 	}
 
 	log.Printf("read in %d records", len(records))
+
+	// analyze
+	//
+
+	analyses := analyzers.Plugins()
+	results := make([]common.AnalysisResult, 0, len(analyses))
+
+	for _, analyze := range analyses {
+		results = append(results, analyze(records))
+	}
+
+	log.Printf("results: %+v", results)
+
 }
 
 // code generation
