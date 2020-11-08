@@ -9,10 +9,10 @@ import "sort"
 import "github.com/codomatech/go.access/common"
 import parsers "github.com/codomatech/go.access/parsers"
 import analyzers "github.com/codomatech/go.access/analyzers"
-
-//import output "github.com/codomatech/go.access/output"
+import output "github.com/codomatech/go.access/output"
 
 var arginformat = flag.String("format", "clf", "input log format")
+var argoutdir = flag.String("output", "./results", "output directory")
 
 func main() {
 	flag.Parse()
@@ -24,11 +24,13 @@ func main() {
 
 	fpath := args[0]
 
-	/*
-		fmt.Println("parsers.plugins: ", parsers.Plugins())
-		fmt.Println("analyzers.plugins: ", analyzers.Plugins())
-		fmt.Println("output.plugins: ", output.Plugins())
-	*/
+	// create output directory if not exists
+	if _, err := os.Stat(*argoutdir); os.IsNotExist(err) {
+		err := os.Mkdir(*argoutdir, 0755)
+		if err != nil {
+			log.Fatalf("Failed to create output directory %s (%+v)", *argoutdir, err)
+		}
+	}
 
 	// parse
 	//
@@ -86,7 +88,12 @@ func main() {
 		results = append(results, analyze(records))
 	}
 
-	log.Printf("results: %+v", results)
+	log.Printf("computed %d results", len(results))
+
+	// output
+	for _, outputf := range output.Plugins() {
+		outputf(results, *argoutdir)
+	}
 
 }
 
