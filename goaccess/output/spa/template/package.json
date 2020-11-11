@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "apexcharts": "^3.22.2",
+    "mithril": "^2.0.4",
+    "parcel": "^1.12.4",
+    "yarn": "^1.22.10"
+  },
+  "browserslist": [
+    "since 2017-06"
+  ]
+}
